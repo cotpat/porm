@@ -1,16 +1,16 @@
 {
-    "name": "cotpat/porm",
-    "description": "A simple toy ORM for PHP",
-    "autoload": {
-        "psr-4": {
-            "Cotpat\\Porm\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Patrick Côté",
-            "email": "85751624+cotpat@users.noreply.github.com"
-        }
-    ],
-    "require": {}
+  "name": "cotpat/porm",
+  "description": "A simple toy ORM for PHP",
+  "autoload": {
+    "psr-4": {
+        "Cotpat\\Porm\\": "src/"
+    }
+  },
+  "authors": [
+    {
+        "name": "Patrick Côté",
+        "email": "85751624+cotpat@users.noreply.github.com"
+    }
+  ],
+  "require": {}
 }
