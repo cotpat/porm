@@ -6,8 +6,8 @@ use mysqli;
 
 $connection = new Connection(
   "127.0.0.1",
-  "root",
-  "root",
+  "porm-devel",
+  "porm-pw",
   "test",
   "3306"
 );
