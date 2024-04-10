@@ -36,14 +36,12 @@ class Connection {
         $password,
         $dbName,
         $port,
-        $socket,
     ) {
         $this->host = $host;
         $this->username = $username;
         $this->password = $password;
         $this->dbName = $dbName;
         $this->port = $port;
-        $this->socket = $socket;
 
         if (!$this->connect()) {
             echo 'Connection error! Check your credentials, hosts, ports.';
@@ -64,7 +62,6 @@ class Connection {
             $this->password,
             $this->dbName,
             $this->port,
-            $this->socket
         );
 
         if ($this->mysqli->connect_error) {
@@ -74,10 +71,77 @@ class Connection {
         return true;
     }
 
+    /**
+     * Closes the connection
+     *
+     * @return void
+     */
     public function disconnect()
     {
         if (isset($this->mysqli)) {
             $this->mysqli->close();
         }
+    }
+
+    /**
+     * Assemble and execute a CREATE query
+     *
+     * @param string $table
+     * @param array $columns
+     * @param array $values
+     * @return void
+     */
+    public function insert(
+        $table,
+        $columns,
+        $values
+    ) {
+        $query = "INSERT INTO $table $columns VALUES $values";
+        return $this->mysqli->query($query);
+    }
+
+    /**
+     * Assemble and execute an UPDATE query
+     * TODO: replace placeholder code
+     *
+     * @param string $table
+     * @param array $columns
+     * @param array $values
+     * @return mixed
+     */
+    public function update(
+        $table,
+        $columns,
+        $values
+    ) {
+        $updateString = ''; // = $this->generateUpdateString($columns);
+
+        $query = "UPDATE $table SET $updateString";
+        $result = $this->mysqli->query($query);
+        return $result;
+    }
+
+    /**
+     * Assemble and execute a SELECT query
+     * TODO: replace placeholder code
+     *
+     * @param string $table
+     * @param array $columns
+     * @return mixed
+     */
+    public function select(
+        $table,
+        $columns
+    ) {
+        $query = "SELECT $columns FROM $table";
+
+        $result = $this->mysqli->query($query);
+        $response = [];
+
+        if ($result) {
+            // TODO
+        }
+
+        return $response;
     }
 }
