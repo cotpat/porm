@@ -1,15 +1,11 @@
 <?php
 
 require_once 'vendor/autoload.php';
-use Cotpat\Porm\Connection;
-use mysqli;
+use Cotpat\Porm\TestSQLObject;
 
-$connection = new Connection(
-  "127.0.0.1",
-  "porm-devel",
-  "porm-pw",
-  "test",
-  "3306"
-);
+$testModel = new TestSQLObject();
+$testModels = $testModel->findAll();
+
+echo var_dump($testModels);
 
 echo file_get_contents("html/main.html");
