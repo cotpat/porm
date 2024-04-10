@@ -4,7 +4,7 @@ namespace Cotpat\Porm;
 
 class TestSQLObject extends SQLObject
 {
-  private $tableName = 'testObj';
+  private $tableName = 'user';
 
   public function __construct()
   {
