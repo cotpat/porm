@@ -42,10 +42,6 @@ class Connection {
         $this->password = $password;
         $this->dbName = $dbName;
         $this->port = $port;
-
-        if (!$this->connect()) {
-            echo 'Connection error! Check your credentials, hosts, ports.';
-        }
     }
 
     /**
@@ -54,7 +50,7 @@ class Connection {
      *
      * @return bool
      */
-    private function connect()
+    public function connect()
     {
         $this->mysqli = new mysqli(
             $this->host,
@@ -84,7 +80,7 @@ class Connection {
     }
 
     /**
-     * Assemble and execute a CREATE query
+     * Assemble and execute an INSERT query
      *
      * @param string $table
      * @param array $columns
@@ -112,12 +108,15 @@ class Connection {
     public function update(
         $table,
         $columns,
-        $values
+        $values,
+        $conditions
     ) {
-        $updateString = ''; // = $this->generateUpdateString($columns);
+        $updateString  = $this->assembleUpdateString($columns, $values);
+        $whereString = $this->assembleWhereString($conditions);
 
-        $query = "UPDATE $table SET $updateString";
+        $query = "UPDATE $table SET $updateString WHERE $whereString";
         $result = $this->mysqli->query($query);
+
         return $result;
     }
 
@@ -131,17 +130,91 @@ class Connection {
      */
     public function select(
         $table,
-        $columns
+        $columns,
+        $conditions,
+        $limit = null,
+        $offset = null
     ) {
         $query = "SELECT $columns FROM $table";
+
+        if (!empty($conditions)) {
+            $whereString = $this->assembleWhereString($conditions);
+            $query .= "WHERE $whereString";
+        }
+
+        if (isset($limit) && isset($offset)) {
+            $query .= "LIMIT $limit OFFSET $offset";
+        }
 
         $result = $this->mysqli->query($query);
         $response = [];
 
         if ($result) {
-            // TODO
+            $response['fields'] = $this->fetchFields($result);
+            $response['values'] = mysqli_fetch_all($result);
         }
 
         return $response;
+    }
+
+    public function delete($name, $conditions)
+    {
+        $whereString = $this->assembleWhereString($conditions);
+        $query = "DELETE FROM $name WHERE $whereString";
+
+        return $query;
+    }
+
+    /**
+     * Assembles the argument string for UPDATE
+     *
+     * @param array $keys
+     * @param array $values
+     * @return string
+     */
+    public function assembleUpdateString($keys, $values)
+    {
+        $count = count($keys);
+        $assembledString = '';
+
+        for ($i = 0; $i < $count; $i++) {
+            $assembledString .= $keys[$i] . '=' . $values[$i] . ',';
+        }
+
+        $assembledString .= $keys[$count - 1] . '=' . $values [$count -1];
+        return $assembledString;
+    }
+
+    /**
+     * Assembles the WHERE argument string
+     *
+     * @param array $values
+     * @return void
+     */
+    public function assembleWhereString($values)
+    {
+        $assembledString = '';
+
+        foreach ($values as $key => $value) {
+            $assembledString .= $key . $value[0] . $value[1] . " " . $value[2];
+        }
+
+        return $assembledString;
+    }
+
+    public function fetchFields($result)
+    {
+        if ($result) {
+            $fieldsData = $result->fetch_fields();
+            $fields = [];
+
+            foreach ($fieldsData as $fieldData) {
+                $fields[] = $fieldData->name;
+            }
+
+            return $fields;
+        }
+
+        return [];
     }
 }
