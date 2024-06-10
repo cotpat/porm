@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: porm-db
+  #  command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: porm-db
+      MYSQL_ROOT_PASSWORD: 'strong_password'
+    ports:
+      - 3306:3307
+    expose:
+      - '3307'
+    volumes:
+      - porm-db:/var/lib/mysql
+volumes:
+  porm-db:

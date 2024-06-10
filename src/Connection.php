@@ -15,6 +15,7 @@ class Connection {
     private $dbName = '';
     private $port = '';
     private $socket = '';
+
     private $mysqli;
 
     /**
@@ -42,6 +43,9 @@ class Connection {
         $this->password = $password;
         $this->dbName = $dbName;
         $this->port = $port;
+
+        $this->connect();
+        $GLOBALS['mysqli'] = $this->mysqli; 
     }
 
     /**

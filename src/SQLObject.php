@@ -19,7 +19,7 @@ class SQLObject
       'porm-devel',
       'porm-pw',
       'test',
-      '3306'
+      '3307'
     );
 
     if (!$this->connection->connect()) {
