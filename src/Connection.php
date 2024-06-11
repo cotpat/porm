@@ -38,13 +38,22 @@ class Connection {
         $dbName,
         $port,
     ) {
+        if ($this->mysqli) {
+            echo 'Connection already established';
+            return;
+        }
+
         $this->host = $host;
         $this->username = $username;
         $this->password = $password;
         $this->dbName = $dbName;
         $this->port = $port;
 
-        $this->connect();
+        if (!$this->connect()) {
+            echo 'Error in establishing connection';
+            return;
+        };
+        
         $GLOBALS['mysqli'] = $this->mysqli; 
     }
 

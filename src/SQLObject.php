@@ -12,21 +12,9 @@ class SQLObject
   private $tableName = '';
   private $connection;
 
+
   public function __construct()
   {
-    $this->connection = new Connection(
-      '127.0.0.1',
-      'porm-devel',
-      'porm-pw',
-      'test',
-      '3307'
-    );
-
-    if (!$this->connection->connect()) {
-      echo "Uh oh -- connection failed";
-      return;
-    }
-
     $this->loadClassProperties();
   }
 
@@ -61,7 +49,7 @@ class SQLObject
 
   public function loadClassProperties()
   {
-    $fields = $this->connection->fetchFields($this->tableName);
+    $fields = $GLOBALS['mysqli']->fetchFields($this->tableName);
 
     foreach ($fields as $field) {
       $this->$field = null;

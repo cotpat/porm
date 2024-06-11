@@ -3,21 +3,22 @@
 require_once '../vendor/autoload.php';
 
 use Cotpat\Porm\Connection;
+use Cotpat\Porm\Field;
+use Cotpat\Porm\Model;
+use Cotpat\Porm\Schema;
 use Cotpat\Porm\TestSQLObject;
 
 $connection = new Connection(
   '127.0.0.1',
   'root',
   'strong_password',
-  'db',
+  'porm-db',
   '3307'
 );
 
-// $testModel = new TestSQLObject();
-// $testModels = $testModel->findAll();
+$testModelSchema = new Schema(
+  new Field('Name', Field::TYPE_STRING_VARCHAR),
+  new Field('Age', Field::TYPE_INT_INT)
+);
 
-echo 'hello??';
-echo var_dump($testModels);
-
-echo file_get_contents("html/main.html");
-echo var_dump($testModels);
+$testModel = new Model('Person', $testModelSchema);
